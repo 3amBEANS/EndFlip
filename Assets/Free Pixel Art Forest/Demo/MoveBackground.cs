@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoveBackground : MonoBehaviour {
 
-
+	/*
 
 	public float speed;
 	private float x;
@@ -38,4 +38,5 @@ public class MoveBackground : MonoBehaviour {
 
 
 	}
+	*/
 }
