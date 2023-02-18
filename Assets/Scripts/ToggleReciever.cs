@@ -20,7 +20,7 @@ namespace Vincent
         {
             c.enabled = true;
             sr.color = og;
-        }
+        }   
         public override void Off()
         {
             c.enabled = false;
