@@ -16,6 +16,8 @@ public class DumbassMovement : MonoBehaviour
 
     private bool isGrounded = false;
 
+    public Transform spawnPoint;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,5 +54,22 @@ public class DumbassMovement : MonoBehaviour
         // Update animator parameters
         animator.SetFloat("Speed", Mathf.Abs(moveDirection));
         animator.SetBool("IsGrounded", isGrounded);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Obstacle") || collision.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("collided");
+            // play the death animation and sound effect
+            animator.SetTrigger("Die");
+
+            // reset the player's position to the spawn point after a delay
+            Invoke("ResetPosition", 1.0f);
+        }
+    }
+    private void ResetPosition()
+    {
+        transform.position = spawnPoint.position;
     }
 }
