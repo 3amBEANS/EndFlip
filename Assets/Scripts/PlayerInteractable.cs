@@ -2,22 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-
-public abstract class PlayerInteractable : MonoBehaviour
+namespace Vincent
 {
-    private void OnCollisionEnter2D(Collision2D collision)
+    public abstract class PlayerInteractable : MonoBehaviour
     {
-        if (collision.collider.CompareTag("Player"))
+        private void OnCollisionEnter2D(Collision2D collision)
         {
-            collisionAction(collision.collider);
+            if (collision.collider.CompareTag("Player"))
+            {
+                collisionAction(collision.collider);
+            }
         }
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            collisionAction(collision);
+            if (collision.CompareTag("Player"))
+            {
+                collisionAction(collision);
+            }
         }
+        public abstract void collisionAction(Collider2D coll);
     }
-    public abstract void collisionAction(Collider2D coll);
 }

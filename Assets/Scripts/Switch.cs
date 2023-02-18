@@ -1,27 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Switch : PlayerInteractable
+namespace Vincent
 {
-    [SerializeField] private List<AbstractReciver> recivers;
-    private bool isOn = false;
-    public override void collisionAction(Collider2D coll)
+    public class Switch : PlayerInteractable
     {
-        if(isOn)
+        [SerializeField] private List<AbstractReciver> recivers;
+        private bool isOn = false;
+        public override void collisionAction(Collider2D coll)
         {
-            foreach(AbstractReciver r in recivers)
+            if (isOn)
             {
-                r.Off();
+                foreach (AbstractReciver r in recivers)
+                {
+                    r.TurnOff();
+                }
             }
-        }
-        else
-        {
-            foreach (AbstractReciver r in recivers)
+            else
             {
-                r.On();
+                foreach (AbstractReciver r in recivers)
+                {
+                    r.TurnOn();
+                }
             }
+            isOn = !isOn;
         }
-        isOn = !isOn;
     }
 }
