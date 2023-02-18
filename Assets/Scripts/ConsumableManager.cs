@@ -8,7 +8,7 @@ namespace Vincent
     public class ConsumableManager : MonoBehaviour
     {
         private static Image consumableUI;
-        private static Consumable curConsumable;
+        public static Consumable curConsumable;
         [HideInInspector]public static ConsumableManager consumableManager;
         public Sprite emptySprite;
         
