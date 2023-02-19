@@ -97,6 +97,8 @@ namespace TarodevController
         [SerializeField] private int _detectorCount = 3;
         [SerializeField] private float _detectionRayLength = 0.1f;
         [SerializeField] [Range(0.1f, 0.3f)] private float _rayBuffer = 0.1f; // Prevents side detectors hitting the ground
+        [SerializeField] private string _deathTag = "Obstacle";
+
 
         private RayRange _raysUp, _raysRight, _raysDown, _raysLeft;
         private bool _colUp, _colRight, _colDown,
@@ -122,6 +124,15 @@ namespace TarodevController
 
             _colDown = groundedCheck;
 
+            // Check for collision with objects that have the specified tag
+            if (Physics2D.OverlapBox(transform.position, _characterBounds.size, 0, LayerMask.GetMask(_deathTag)) != null)
+            {
+                // Player has collided with object that has the specified tag, handle death
+                Debug.Log("Player collided with object that has the Death tag.");
+                // Add your death logic here
+                // For example, you could reset the level, show a death animation, or play a sound effect
+            }
+
             // The rest
             _colUp = RunDetection(_raysUp);
             _colLeft = RunDetection(_raysLeft);
@@ -129,24 +140,12 @@ namespace TarodevController
 
             bool RunDetection(RayRange range)
             {
-                var hits = EvaluateRayPositions(range).Select(point => Physics2D.Raycast(point, range.Dir, _detectionRayLength, _groundLayer));
-                foreach (var hit in hits)
-                {
-                    if (hit.collider != null && hit.collider.CompareTag("Obstacle"))
-                    {
-                        // Send player back to spawn point
-                        Debug.Log("collided");
-                        // ...
-                        return true; // Collision detected
-                    }
-                }
-                return false; // No collision detected
+                return EvaluateRayPositions(range).Any(point => Physics2D.Raycast(point, range.Dir, _detectionRayLength, _groundLayer));
             }
         }
 
 
-        private void CalculateRayRanged()
-        {
+        private void CalculateRayRanged() {
             // This is crying out for some kind of refactor. 
             var b = new Bounds(transform.position, _characterBounds.size);
 
@@ -157,30 +156,24 @@ namespace TarodevController
         }
 
 
-        private IEnumerable<Vector2> EvaluateRayPositions(RayRange range)
-        {
-            for (var i = 0; i < _detectorCount; i++)
-            {
+        private IEnumerable<Vector2> EvaluateRayPositions(RayRange range) {
+            for (var i = 0; i < _detectorCount; i++) {
                 var t = (float)i / (_detectorCount - 1);
                 yield return Vector2.Lerp(range.Start, range.End, t);
             }
         }
 
-        private void OnDrawGizmos()
-        {
+        private void OnDrawGizmos() {
             // Bounds
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireCube(transform.position + _characterBounds.center, _characterBounds.size);
 
             // Rays
-            if (!Application.isPlaying)
-            {
+            if (!Application.isPlaying) {
                 CalculateRayRanged();
                 Gizmos.color = Color.blue;
-                foreach (var range in new List<RayRange> { _raysUp, _raysRight, _raysDown, _raysLeft })
-                {
-                    foreach (var point in EvaluateRayPositions(range))
-                    {
+                foreach (var range in new List<RayRange> { _raysUp, _raysRight, _raysDown, _raysLeft }) {
+                    foreach (var point in EvaluateRayPositions(range)) {
                         Gizmos.DrawRay(point, range.Dir * _detectionRayLength);
                     }
                 }
@@ -204,10 +197,8 @@ namespace TarodevController
         [SerializeField] private float _deAcceleration = 60f;
         [SerializeField] private float _apexBonus = 2;
 
-        private void CalculateWalk()
-        {
-            if (Input.X != 0)
-            {
+        private void CalculateWalk() {
+            if (Input.X != 0) {
                 // Set horizontal move speed
                 _currentHorizontalSpeed += Input.X * _acceleration * Time.deltaTime;
 
@@ -218,14 +209,12 @@ namespace TarodevController
                 var apexBonus = Mathf.Sign(Input.X) * _apexBonus * _apexPoint;
                 _currentHorizontalSpeed += apexBonus * Time.deltaTime;
             }
-            else
-            {
+            else {
                 // No input. Let's slow the character down
                 _currentHorizontalSpeed = Mathf.MoveTowards(_currentHorizontalSpeed, 0, _deAcceleration * Time.deltaTime);
             }
 
-            if (_currentHorizontalSpeed > 0 && _colRight || _currentHorizontalSpeed < 0 && _colLeft)
-            {
+            if (_currentHorizontalSpeed > 0 && _colRight || _currentHorizontalSpeed < 0 && _colLeft) {
                 // Don't walk through walls
                 _currentHorizontalSpeed = 0;
             }
