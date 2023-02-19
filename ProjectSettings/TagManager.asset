@@ -4,16 +4,15 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Ground
-  - PuzzleObject
+  - Obstacle
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
-  - Ground
+  - Enemy
   - 
   - 
   - 
