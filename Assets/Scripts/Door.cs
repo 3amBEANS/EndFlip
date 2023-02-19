@@ -14,6 +14,7 @@ namespace Vincent
         }
         public void Open()
         {
+            ConsumableManager.consumableManager.removeConsumable();
             Destroy(gameObject);
         }
     }

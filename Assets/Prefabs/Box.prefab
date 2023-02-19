@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7244739993683981107}
   - component: {fileID: 7244739993683981115}
   - component: {fileID: 8830957371479794258}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Box
   m_TagString: PuzzleObject
   m_Icon: {fileID: 0}
