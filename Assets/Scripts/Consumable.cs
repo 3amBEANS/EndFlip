@@ -2,7 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public abstract class Consumable : PlayerInteractable
+namespace Vincent
 {
-    protected static Image consumableUI;
+    public abstract class Consumable : PlayerInteractable
+    {
+        public Sprite powerUpSprite;
+        public override void collisionAction(Collider2D coll)
+        {
+            ConsumableManager.consumableManager.addConsumable(this);
+        }
+        public virtual void powerUpAction()
+        {
+            ConsumableManager.consumableManager.removeConsumable();
+        }
+    }
 }
