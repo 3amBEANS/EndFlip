@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1241101697661285906}
   - component: {fileID: 1241101697661285909}
   - component: {fileID: 1098569587618670460}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spring
   m_TagString: PuzzleObject
   m_Icon: {fileID: 0}
